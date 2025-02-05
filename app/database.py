@@ -6,9 +6,9 @@ from urllib.parse import quote_plus
 from app import models
 
 # Configurações do banco de dados
-DB_USER = "postgres"
-DB_PASSWORD = quote_plus("admin_123")  # Codifica caracteres especiais na senha
-DB_HOST = "db"
+DB_USER = "sisbladm"
+DB_PASSWORD = quote_plus("pTMtXIXbp1756kUHTwq0YAoUhXz6P3NU")  # Codifica caracteres especiais na senha
+DB_HOST = "dpg-cuhakid6l47c73do5i3g-a"
 DB_PORT = "5432"
 DB_NAME = "sistemabl"  # Nome do banco de dados
 
