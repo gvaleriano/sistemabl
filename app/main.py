@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import items, bancos, cambio, cash, ativo_amostras, representadas
+from app.routers import items, bancos, cambio, cash, ativo_amostras, representadas, moedas
 from app.database import engine, Base
 from app import models
 
@@ -19,6 +19,7 @@ app.include_router(bancos.router)
 app.include_router(cambio.router)
 app.include_router(cash.router)
 app.include_router(representadas.router)
+app.include_router(moedas.router)
 app.include_router(items.router)
 
 @app.get("/")

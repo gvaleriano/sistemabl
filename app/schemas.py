@@ -21,7 +21,6 @@ class Item(ItemBase):
 
 #Bancos
 class BancosBase(BaseModel):
-    b_cod: str
     b_ag: str
     b_cta: str
     b_nome: str
@@ -31,7 +30,7 @@ class BancosCreate(BancosBase):
     pass
 
 class Bancos(BancosBase):
-    id: int
+    b_cod: int
     created_at: datetime
     updated_at: Optional[datetime]
 
@@ -82,7 +81,6 @@ class Cash(CashBase):
 #Ativos e Amostras
 
 class AtivoEAmostrasBase(BaseModel):
-    cod: str
     descr: str
     ativo_fixo: bool
     valor_ent: float
@@ -99,7 +97,7 @@ class AtivoEAmostrasCreate(AtivoEAmostrasBase):
     pass
 
 class AtivoEAmostras(AtivoEAmostrasBase):
-    id: int
+    cod: int
     created_at: datetime
     updated_at: Optional[datetime]
     
@@ -108,7 +106,6 @@ class AtivoEAmostras(AtivoEAmostrasBase):
 
 #Faturamento
 class FaturamentoBase(BaseModel):
-    fat_cod: str
     fat_tipo: str
     fat_cliente: str
     fat_data_entrada: datetime
@@ -123,7 +120,7 @@ class FaturamentoCreate(FaturamentoBase):
     pass
 
 class Faturamento(FaturamentoBase):
-    id: int
+    fat_cod: int
     created_at: datetime
     updated_at: Optional[datetime]
 
@@ -144,7 +141,7 @@ class ContatosBase(BaseModel):
     prioridade: str
     origem: str
     cp_outros: str
-    cli_cod: str
+    cli_cod: int
 
 class ContatosCreate(ContatosBase):
     pass
@@ -160,7 +157,6 @@ class Contatos(ContatosBase):
 
 #Clientes
 class ClientesBase(BaseModel):
-    cli_cod: str
     cli_nomecom: str
     cli_nomered: str
     endereco: str
@@ -184,7 +180,7 @@ class ClientesCreate(ClientesBase):
     pass
 
 class Clientes(ClientesBase):
-    id: int
+    cli_cod: int
     created_at: datetime
     updated_at: Optional[datetime]
 
@@ -193,10 +189,9 @@ class Clientes(ClientesBase):
 
 #Representadas
 class RepresentadasBase(BaseModel):
-    rep_cod: str
     rep_preff_inv: str
     rep_nome: str
-    moeda: str
+    moeda: int
     simbolo: str
     rep_crit_page: str
     rep_com1: str
@@ -219,7 +214,22 @@ class RepresentadasCreate(RepresentadasBase):
     pass
 
 class Representadas(RepresentadasBase):
-    id: int
+    rep_cod: int
+    created_at: datetime
+    updated_at: Optional[datetime]
+
+    class Config:
+        from_attributes = True
+
+class MoedasBase(BaseModel):
+    mo_nome: str
+    simbolo: str
+
+class MoedasCreate(MoedasBase):
+    pass
+
+class Moedas(MoedasBase):
+    mo_cod: int
     created_at: datetime
     updated_at: Optional[datetime]
 

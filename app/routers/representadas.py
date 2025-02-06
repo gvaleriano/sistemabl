@@ -20,16 +20,16 @@ def read_representadas(skip: int = 0, limit: int = 100, db: Session = Depends(ge
     representadas = db.query(Representadas).offset(skip).limit(limit).all()
     return representadas
 
-@router.get("/representadas/{representada_id}", response_model=RepresentadasSchema)
-def read_representada(representada_id: int, db: Session = Depends(get_db)):
-    db_representada = db.query(Representadas).filter(Representadas.id == representada_id).first()
+@router.get("/representadas/{rep_cod}", response_model=RepresentadasSchema)
+def read_representada(rep_cod: int, db: Session = Depends(get_db)):
+    db_representada = db.query(Representadas).filter(Representadas.rep_cod == rep_cod).first()
     if db_representada is None:
         raise HTTPException(status_code=404, detail="Representada não encontrada")
     return db_representada
 
-@router.put("/representadas/{representada_id}", response_model=RepresentadasSchema)
-def update_representada(representada_id: int, representada: RepresentadasCreate, db: Session = Depends(get_db)):
-    db_representada = db.query(Representadas).filter(Representadas.id == representada_id).first()
+@router.put("/representadas/{rep_cod}", response_model=RepresentadasSchema)
+def update_representada(rep_cod: int, representada: RepresentadasCreate, db: Session = Depends(get_db)):
+    db_representada = db.query(Representadas).filter(Representadas.rep_cod == rep_cod).first()
     if db_representada is None:
         raise HTTPException(status_code=404, detail="Representada não encontrada")
     
@@ -40,9 +40,9 @@ def update_representada(representada_id: int, representada: RepresentadasCreate,
     db.refresh(db_representada)
     return db_representada
 
-@router.delete("/representadas/{representada_id}")
-def delete_representada(representada_id: int, db: Session = Depends(get_db)):
-    db_representada = db.query(Representadas).filter(Representadas.id == representada_id).first()
+@router.delete("/representadas/{rep_cod}")
+def delete_representada(rep_cod: int, db: Session = Depends(get_db)):
+    db_representada = db.query(Representadas).filter(Representadas.rep_cod == rep_cod).first()
     if db_representada is None:
         raise HTTPException(status_code=404, detail="Representada não encontrada")
     

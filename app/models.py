@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 class Item(Base):
     __tablename__ = "items"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     title = Column(String, index=True)
     description = Column(String)
     is_active = Column(Boolean, default=True)
@@ -19,8 +19,7 @@ class Item(Base):
 class Bancos(Base):
     __tablename__ = "bancos"
     
-    id = Column(Integer, primary_key=True, index=True)
-    b_cod = Column(String(6), nullable=False)
+    b_cod = Column(Integer, primary_key=True, index=True, autoincrement=True)
     b_ag = Column(String(20), nullable=False)
     b_cta = Column(String(20), nullable=False)
     b_nome = Column(String(20), nullable=False)
@@ -36,8 +35,7 @@ class Bancos(Base):
 class AtivoEAmostras(Base):
     __tablename__ = "ativo_e_amostras"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    cod = Column(String(6), nullable=False)
+    cod = Column(Integer, primary_key=True, autoincrement=True)
     descr = Column(String(50))
     ativo_fixo = Column(Boolean, default=False)
     valor_ent = Column(Numeric(precision=11, scale=2))  # Número decimal
@@ -57,7 +55,7 @@ class AtivoEAmostras(Base):
 class Cambio(Base):
     __tablename__ = "cambio"
     
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     mo_cod = Column(String(6), nullable=False)
     mo_data = Column(String(8), nullable=False)
     camb_valr = Column(Float(15), nullable=False)
@@ -75,7 +73,7 @@ class Cambio(Base):
 class Cash(Base):
     __tablename__ = "cash"
     
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     c_data = Column(Date, nullable=False)
     c_descricao = Column(String(50), nullable=False)
     c_nome = Column(String(20), nullable=False)
@@ -101,8 +99,7 @@ class Cash(Base):
 class Clientes(Base):
     __tablename__ = 'clientes'
     
-    id = Column(Integer, primary_key=True)
-    cli_cod = Column(String(6), nullable=False)
+    cli_cod = Column(Integer, primary_key=True, autoincrement=True, index=True)
     cli_nomecomp = Column(Text, nullable=False)
     cli_nomered = Column(String(35), nullable=True)
     endereco = Column(String(50), nullable=False)
@@ -135,7 +132,7 @@ class Clientes(Base):
 #Contatos
 class Contatos(Base):
     __tablename__ = 'contatos'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     trat = Column(String(5))
     nome = Column(String(30))
     sobrenome = Column(String(30))
@@ -163,15 +160,10 @@ class Contatos(Base):
     )
 
 #Faturamento
-from sqlalchemy import Column, String, Float, DateTime, Index
-from sqlalchemy.sql.functions import func
-from app.database import Base
-
 class Faturamento(Base):
     __tablename__ = "faturamento"
 
-    id = Column(Integer, primary_key=True, index=True)
-    fat_cod = Column(String(6), nullable=False)
+    fat_cod = Column(Integer, primary_key=True, index=True, autoincrement=True)
     fat_tipo = Column(String(35), nullable=False)
     fat_cliente = Column(String(50), nullable=False)
     fat_data_entrada = Column(DateTime(timezone=True), nullable=False)
@@ -194,9 +186,9 @@ class Faturamento(Base):
 class FaturamentoDetalhe(Base):
     __tablename__ = "fat_detalhe"
 
-    id = Column(Integer, primary_key=True, index=True)
-    fat_cod = Column(String(6), ForeignKey('public.faturamento.fat_cod', ondelete="CASCADE"), nullable=False)
-    det_item = Column(String(50), nullable=False)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    fat_cod = Column(String(6), ForeignKey('public.faturamento.fat_cod', ondelete="CASCADE"), nullable=False, index=True)
+    det_item = Column(String(50), nullable=False, index=True)
     det_item_cod_cli = Column(String(50), nullable=False)
     det_qtd = Column(Float(15), nullable=False)
     det_preco_lista = Column(Float(14), nullable=True)
@@ -216,10 +208,9 @@ class FaturamentoDetalhe(Base):
 class Representadas(Base):
     __tablename__ = "representadas"
 
-    id = Column(Integer, primary_key=True, index=True)
-    rep_cod = Column(String(6), nullable=True)
-    rep_nome = Column(String(50), nullable=True)
-    moeda = Column(String(6), nullable=True)
+    rep_cod = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    rep_nome = Column(String(50), nullable=True, index=True)
+    moeda = Column(Integer, ForeignKey('public.moedas.mo_cod', ondelete="CASCADE"), nullable=False)
     simbolo = Column(String(10), nullable=True)
     rep_com1 = Column(String(4), nullable=True)
     rep_com2 = Column(String(4), nullable=True)
@@ -238,11 +229,28 @@ class Representadas(Base):
     repr = Column(Text, nullable=True)
     repw = Column(Text, nullable=True)
     repc = Column(Text, nullable=True)
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     __table_args__ = (
         Index('ix_representadas_rep_cod', 'rep_cod'),
         Index('ix_representadas_rep_nome', 'rep_nome'),
+        {'schema': 'public'}
+    )
+#Moedas
+class Moedas(Base):
+    __tablename__ = "moedas"
+
+    mo_cod = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    mo_nome = Column(String(6), nullable=True, index=True)
+    simbolo = Column(String(10), nullable=True)
+    
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    __table_args__ = (
+        Index('ix_mo_cod', 'mo_cod'),
+        Index('ix_mo_nome', 'mo_nome'),
         {'schema': 'public'}
     )

@@ -20,16 +20,16 @@ def read_faturamento(skip: int = 0, limit: int = 100, db: Session = Depends(get_
     faturamentos = db.query(Faturamento).offset(skip).limit(limit).all()
     return faturamentos
 
-@router.get("/faturamento/{faturamento_id}", response_model=FaturamentoSchema)
-def read_faturamento(faturamento_id: int, db: Session = Depends(get_db)):
-    db_faturamento = db.query(Faturamento).filter(Faturamento.id == faturamento_id).first()
+@router.get("/faturamento/{fat_cod}", response_model=FaturamentoSchema)
+def read_faturamento(fat_cod: int, db: Session = Depends(get_db)):
+    db_faturamento = db.query(Faturamento).filter(Faturamento.fat_cod == fat_cod).first()
     if db_faturamento is None:
         raise HTTPException(status_code=404, detail="Faturamento não encontrado")
     return db_faturamento
 
-@router.put("/faturamento/{faturamento_id}", response_model=FaturamentoSchema)
-def update_faturamento(faturamento_id: int, faturamento: FaturamentoCreate, db: Session = Depends(get_db)):
-    db_faturamento = db.query(Faturamento).filter(Faturamento.id == faturamento_id).first()
+@router.put("/faturamento/{fat_cod}", response_model=FaturamentoSchema)
+def update_faturamento(fat_cod: int, faturamento: FaturamentoCreate, db: Session = Depends(get_db)):
+    db_faturamento = db.query(Faturamento).filter(Faturamento.fat_cod == fat_cod).first()
     if db_faturamento is None:
         raise HTTPException(status_code=404, detail="Faturamento não encontrado")
     
@@ -40,9 +40,9 @@ def update_faturamento(faturamento_id: int, faturamento: FaturamentoCreate, db: 
     db.refresh(db_faturamento)
     return db_faturamento
 
-@router.delete("/faturamento/{faturamento_id}")
-def delete_faturamento(faturamento_id: int, db: Session = Depends(get_db)):
-    db_faturamento = db.query(Faturamento).filter(Faturamento.id == faturamento_id).first()
+@router.delete("/faturamento/{fat_cod}")
+def delete_faturamento(fat_cod: int, db: Session = Depends(get_db)):
+    db_faturamento = db.query(Faturamento).filter(Faturamento.fat_cod == fat_cod).first()
     if db_faturamento is None:
         raise HTTPException(status_code=404, detail="Faturamento não encontrado")
     

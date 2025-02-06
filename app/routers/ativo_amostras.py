@@ -20,16 +20,16 @@ def read_ativo_amostras(skip: int = 0, limit: int = 100, db: Session = Depends(g
     ativos = db.query(models.AtivoEAmostras).offset(skip).limit(limit).all()
     return ativos
 
-@router.get("/ativo-amostras/{ativo_id}", response_model=schemas.AtivoEAmostras)
-def read_ativo_amostra(ativo_id: int, db: Session = Depends(get_db)):
-    db_ativo = db.query(models.AtivoEAmostras).filter(models.AtivoEAmostras.id == ativo_id).first()
+@router.get("/ativo-amostras/{cod}", response_model=schemas.AtivoEAmostras)
+def read_ativo_amostra(cod: int, db: Session = Depends(get_db)):
+    db_ativo = db.query(models.AtivoEAmostras).filter(models.AtivoEAmostras.cod == cod).first()
     if db_ativo is None:
         raise HTTPException(status_code=404, detail="Ativo/Amostra não encontrado")
     return db_ativo
 
-@router.put("/ativo-amostras/{ativo_id}", response_model=schemas.AtivoEAmostras)
-def update_ativo_amostra(ativo_id: int, ativo: schemas.AtivoEAmostrasCreate, db: Session = Depends(get_db)):
-    db_ativo = db.query(models.AtivoEAmostras).filter(models.AtivoEAmostras.id == ativo_id).first()
+@router.put("/ativo-amostras/{cod}", response_model=schemas.AtivoEAmostras)
+def update_ativo_amostra(cod: int, ativo: schemas.AtivoEAmostrasCreate, db: Session = Depends(get_db)):
+    db_ativo = db.query(models.AtivoEAmostras).filter(models.AtivoEAmostras.cod == cod).first()
     if db_ativo is None:
         raise HTTPException(status_code=404, detail="Ativo/Amostra não encontrado")
     
@@ -40,9 +40,9 @@ def update_ativo_amostra(ativo_id: int, ativo: schemas.AtivoEAmostrasCreate, db:
     db.refresh(db_ativo)
     return db_ativo
 
-@router.delete("/ativo-amostras/{ativo_id}")
-def delete_ativo_amostra(ativo_id: int, db: Session = Depends(get_db)):
-    db_ativo = db.query(models.AtivoEAmostras).filter(models.AtivoEAmostras.id == ativo_id).first()
+@router.delete("/ativo-amostras/{cod}")
+def delete_ativo_amostra(cod: int, db: Session = Depends(get_db)):
+    db_ativo = db.query(models.AtivoEAmostras).filter(models.AtivoEAmostras.cod == cod).first()
     if db_ativo is None:
         raise HTTPException(status_code=404, detail="Ativo/Amostra não encontrado")
     
